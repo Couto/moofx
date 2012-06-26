@@ -1,17 +1,17 @@
 /*global phantom:true, console:true, WebPage:true, Date:true*/
 (function () {
 	var url, timeout, page, defer;
-	
+
 	if (phantom.args.length < 1) {
 		console.log("Usage: phantomjs run-mocha.coffee URL [timeout]");
 		phantom.exit();
 	}
-	
+
 	url = phantom.args[0];
 	timeout = phantom.args[1] || 6000;
-	
-	page = new WebPage();
-	
+
+	page = require('webpage').create();
+
 	defer = function (test, scrapper) {
 		var start, condition, func, interval, time, testStart;
 		start = new Date().getTime();
@@ -33,8 +33,9 @@
 				}
 			}
 		};
-		interval = setInterval(func, 100);
+		interval = setInterval(func, 500);
 	};
+
 	page.onConsoleMessage = function (msg) { console.log(msg); };
 	page.open(url, function (status) {
 		var test, scrapper;
@@ -55,13 +56,24 @@
 				specs = document.querySelectorAll(".test");
 				for (i = 0, len = specs.length; i < len; i += 1) {
 					results.push(specs[i].getAttribute("class").search(/fail/) === -1);
+					results.push(specs[i].childNodes[0].innerHTML);
 				}
 				return results;
 			});
-			
+
+			var pair = true;
 			// Outputs a '.' or 'F' for each test
 			console.log(all.reduce(function (str, a) {
-				return str += (a) ? "." : "F";
+				if (pair) {
+					pair=false;
+					return str += ((a) ? "    \033[32m✓ " : "    \033[31m✖ ") ;
+				} else {
+					pair=true;
+					return str += '\033[0m' + a + ' \n';
+
+				}
+
+				return ;
 			}, ""));
 
 			list = page.evaluate(function () {
@@ -121,7 +133,7 @@
 
 				return parseSuites(document.querySelectorAll("#mocha > .suite"), []);
 			});
-	
+
 			// If the list of failures is not empty output the failure messages
 			console.log("");
 			if (list.length) {
@@ -132,5 +144,5 @@
 		};
 		defer(test, scrapper);
 	});
-	
+
 }());

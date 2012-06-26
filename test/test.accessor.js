@@ -77,4 +77,18 @@ describe('computes', function (){
         document.body.removeChild(div)
     })
 
+    it('should have a stop method', function(){
+        expect(testee.stop).to.be.a('function');
+    })
+
+    it('should stop the animation', function(next){
+        test.style.opacity = 0;
+        var opacity = moofx(test).animate({opacity: 1}, {duration: '1s'});
+        setTimeout(function(){
+            opacity.stop(true);
+            expect(moofx(test).compute('opacity')).to.be("1");
+            next();
+        }, 200);
+    })
+
 })

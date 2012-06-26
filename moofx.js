@@ -703,6 +703,19 @@ includes: cubic-bezier by Arian Stolwijk (https://github.com/arian/cubic-bezier)
                 }
                 return this;
             },
+            stop: function(hard) {
+                this.handle(function(node) {
+                    var anims = this._animations;
+                    if (anims) {
+                        for (var k in anims) {
+                            if (anims.hasOwnProperty(k)) {
+                                anims[k].stop(hard);
+                            }
+                        }
+                    }
+                });
+                return this;
+            },
             style: function(A, B) {
                 var styles = A;
                 if (typeof A === "string") {

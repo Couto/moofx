@@ -29,7 +29,7 @@
     "./moofx.js"
   ],
   "scripts": {
-    "test": "phantomjs test/run-mocha.js test/index.html"
+    "test": "node makejs && phantomjs test/run-mocha.js test/index.html"
   },
   "devDependencies": {},
   "optionalDependencies": {},
