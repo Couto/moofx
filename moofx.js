@@ -698,7 +698,9 @@ includes: cubic-bezier by Arian Stolwijk (https://github.com/arian/cubic-bezier)
                         length++;
                         var anims = this._animations || (this._animations = {});
                         var anim = anims[property] || (anims[property] = new BaseAnimation(node, property));
-                        anim.setOptions(options).start(value);
+                        anim.setOptions(options);
+                        console.dir(anim);
+                        anim.start(value);
                     });
                 }
                 return this;
@@ -707,9 +709,10 @@ includes: cubic-bezier by Arian Stolwijk (https://github.com/arian/cubic-bezier)
                 this.handle(function(node) {
                     var anims = this._animations;
                     if (anims) {
-                        for (var k in anims) {
-                            if (anims.hasOwnProperty(k)) {
-                                anims[k].stop(hard);
+                        for (var property in anims) {
+                            console.log(property);
+                            if (anims.hasOwnProperty(property)) {
+                                if (!hard) anims[property].set(anims[property].get()); else anims[property].stop(hard);
                             }
                         }
                     }

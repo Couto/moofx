@@ -85,6 +85,17 @@ describe('computes', function (){
         test.style.opacity = 0;
         var opacity = moofx(test).animate({opacity: 1}, {duration: '1s'});
         setTimeout(function(){
+            var opacityValue = moofx(test).compute('opacity');
+            opacity.stop();
+            expect(moofx(test).compute('opacity')).to.be(opacityValue);
+            next();
+        }, 200);
+    })
+
+    it('should stop the animation and reset it\'s CSS', function(next){
+        test.style.opacity = 0;
+        var opacity = moofx(test).animate({opacity: 1}, {duration: '1s'});
+        setTimeout(function(){
             opacity.stop(true);
             expect(moofx(test).compute('opacity')).to.be("1");
             next();

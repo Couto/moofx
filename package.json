@@ -23,15 +23,19 @@
   "dependencies": {
     "cubic-bezier": "0.1.2",
     "prime": "0.0.5-alpha",
-    "nodes": "0.0.6-alpha"
+    "nodes": "0.0.6-alpha",
+    "wrapup": ">=0.9.10"
   },
   "sources": [
     "./moofx.js"
   ],
   "scripts": {
-    "test": "node makejs && phantomjs test/run-mocha.js test/index.html"
+    "test": "node makejs && phantomjs test/run-mocha.js test/index.html",
+    "start": "./makejs"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cdir":"*"
+  },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
