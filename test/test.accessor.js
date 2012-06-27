@@ -77,6 +77,19 @@ describe('computes', function (){
         document.body.removeChild(div)
     })
 
+})
+
+describe('stop animation', function () {
+
+    var test, testee, testEl, testeeEl
+
+    before(function(){
+        testEl = document.getElementById('test')
+        test = moofx(testEl)
+        testeeEl = document.getElementById('testee')
+        testee = moofx(testeeEl)
+    });
+
     it('should have a stop method', function(){
         expect(testee.stop).to.be.a('function');
     })
@@ -101,5 +114,4 @@ describe('computes', function (){
             next();
         }, 200);
     })
-
-})
+});
