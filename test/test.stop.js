@@ -61,26 +61,15 @@ describe('stop animation', function () {
 
         it('should not run the callback if stopped', function (next) {
 
-            var el = document.createElement('div'),
-                wtf = false,
-                animation = null;
-
-            el.style.width = '100px';
-            el.style.height = '100px';
-            el.style.backgroundColor = '#bada55';
-
-            document.body.appendChild(el);
-
-            animation = moofx(el).animate({ 'margin-left': '400px' }, {
-                duration: '5s',
-                // it should throw error if it reaches here
-                callback: function () { wtf = true; }
-            });
-
-            console.log(moofx(el))
+            var wtf = false,
+                animation = test.animate({ 'margin-left': '400px' }, {
+                    duration: '5s',
+                    // it should throw error if it reaches here
+                    callback: function () { wtf = true; }
+                });
 
             setTimeout(function () {
-                moofx(el).stop();
+                test.stop();
                 expect(wtf).to.not.be.ok();
                 next();
             }, 100);
@@ -89,28 +78,38 @@ describe('stop animation', function () {
 
         it('should not run the callback if hard stopped', function (next) {
 
-            var el = document.createElement('div'),
-                wtf = false,
-                animation = null;
-
-            el.style.width = '100px';
-            el.style.height = '100px';
-            el.style.backgroundColor = '#bada55';
-
-            document.body.appendChild(el);
-
-            animation = moofx(el).animate({ 'margin-left': '400px' }, {
-                duration: '5s',
-                // it should throw error if it reaches here
-                callback: function () { wtf = true; }
-            });
-
-            console.log(moofx(el))
+            var wtf = false,
+                animation = test.animate({ 'margin-left': '400px' }, {
+                    duration: '5s',
+                    // it should throw error if it reaches here
+                    callback: function () { wtf = true; }
+                });
 
             setTimeout(function () {
-                moofx(el).stop(true);
+                test.stop(true);
                 expect(wtf).to.not.be.ok();
                 next();
+            }, 100);
+
+        });
+
+        it('[BUGFIX] it should only run one callback', function (next) {
+
+            var wtf = false,
+                animation = test.animate({ 'margin-left': '400px' }, {
+                    duration: '5s',
+                    // it should throw error if it reaches here
+                    callback: function () { wtf = true; }
+                });
+
+            setTimeout(function () {
+                test.stop(true);
+                expect(wtf).to.not.be.ok();
+
+                test.animate({ 'margin-left': '400px' }, {
+                    duration: '0.2s',
+                    callback: function () { next(); }
+                });
             }, 100);
 
         });
