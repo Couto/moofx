@@ -9,6 +9,7 @@ describe('computes', function (){
         testee = moofx(testeeEl)
     })
 
+
     it('should compute and normalize styles', function(){
         //get
         expect(testee.compute('width')).to.be("100px")
@@ -78,96 +79,3 @@ describe('computes', function (){
     })
 
 })
-
-describe('stop animation', function (){
-
-    var test, testee, testEl, testeeEl
-
-    before(function(){
-        testEl = document.getElementById('test')
-        test = moofx(testEl)
-        testeeEl = document.getElementById('testee')
-        testee = moofx(testeeEl)
-    });
-
-    it('should have a stop method', function(){
-        expect(testee.stop).to.be.a('function');
-    })
-
-    it('should stop the animation', function(next){
-        test.style.opacity = 0;
-
-        var opacity = moofx(test).animate({opacity: 1}, {duration: '0.2s'});
-
-        setTimeout(function(){
-            var opacityValue = moofx(test).compute('opacity');
-            opacity.stop();
-            expect(moofx(test).compute('opacity')).to.be(opacityValue);
-            next();
-        }, 100);
-    })
-
-    it('should stop the animation and set it\'s CSS to final stage', function(next){
-        test.style.opacity = 0;
-
-        var opacity = moofx(test).animate({opacity: 1}, {duration: '0.2s'});
-
-        setTimeout(function(){
-            opacity.stop(true);
-            expect(moofx(test).compute('opacity')).to.be("1");
-            next();
-        }, 100);
-    });
-
-    it('should run the callback if not stopped', function (next) {
-        test.style.opacity = 0;
-
-        var opacity = moofx(test).animate({
-            opacity: 1
-        },{
-            callback: function(){ return next(); }
-        });
-
-    });
-
-    it('should not run the callback if stopped', function(next) {
-        test.style.opacity = 0;
-
-        var callback = false,
-            opacity = moofx(test).animate({ opacity: 1 },{
-                duration: '0.5s',
-                callback: function () {
-                    // it should throw error if it reaches here
-                    callback = true;
-                }
-            });
-
-        setTimeout(function() {
-            opacity.stop();
-            expect(callback).to.not.be.ok();
-            next();
-        }, 25);
-
-    });
-
-    it('should not run the callback if hard stopped', function(next) {
-        test.style.opacity = 0;
-
-        var callback = false,
-            opacity = moofx(test).animate({ opacity: 1 },{
-                duration: '0.5s',
-                callback: function () {
-                    // it should throw error if it reaches here
-                    callback = true;
-                }
-            });
-
-        setTimeout(function() {
-            opacity.stop(true);
-            expect(callback).to.not.be.ok();
-            next();
-        }, 25);
-
-    });
-
-});
