@@ -30,8 +30,8 @@
     "./moofx.js"
   ],
   "scripts": {
-    "test": "node makejs && phantomjs test/run-mocha.js test/index.html",
-    "start": "./makejs"
+    "test": "clear && node makejs && phantomjs test/run-mocha.js test/index.html",
+    "start": "clear && ./makejs"
   },
   "devDependencies": {
     "cdir":"*"

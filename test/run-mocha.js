@@ -43,11 +43,13 @@
 			console.log("Failed to load the page. Check the url");
 			phantom.exit();
 		}
+
 		test = function () {
 			return page.evaluate(function () {
 				return document.querySelector(".duration");
 			});
 		};
+
 		scrapper = function () {
 			var all, list, i, len;
 
@@ -141,7 +143,9 @@
 					console.log(list[i].desc + "\n" + list[i].msg + "\n");
 				}
 			}
+
 		};
+
 		defer(test, scrapper);
 	});
 

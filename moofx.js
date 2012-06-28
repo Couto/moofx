@@ -698,23 +698,9 @@ includes: cubic-bezier by Arian Stolwijk (https://github.com/arian/cubic-bezier)
                         length++;
                         var anims = this._animations || (this._animations = {});
                         var anim = anims[property] || (anims[property] = new BaseAnimation(node, property));
-                        anim.setOptions(options);
-                        anim.start(value);
+                        anim.setOptions(options).start(value);
                     });
                 }
-                return this;
-            },
-            stop: function(hard) {
-                this.handle(function(node) {
-                    var anims = this._animations;
-                    if (anims) {
-                        for (var property in anims) {
-                            if (anims.hasOwnProperty(property)) {
-                                if (!hard) anims[property].set(anims[property].get()); else anims[property].stop(hard);
-                            }
-                        }
-                    }
-                });
                 return this;
             },
             style: function(A, B) {
@@ -732,6 +718,16 @@ includes: cubic-bezier by Arian Stolwijk (https://github.com/arian/cubic-bezier)
                     });
                 }
                 return this;
+            },
+            stop: function(hard) {
+                var anims = this._animations;
+                if (anims) for (var property in anims) if (anims.hasOwnProperty(property)) {
+                    anims[property].callback = function noop() {};
+                    if (!hard) anims[property].set(anims[property].get()); else {
+                        anims[property].resetCSS();
+                        anims[property].set(anims[property].to);
+                    }
+                }
             },
             compute: function(property) {
                 property = camelize(property);
