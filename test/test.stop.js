@@ -44,7 +44,7 @@ describe('stop animation', function () {
             var opacity = test.animate({opacity: 1}, {duration: '0.2s'});
 
             setTimeout(function () {
-                opacity.stop(true);
+                test.stop(true);
                 expect(test.compute('opacity')).to.be("1");
                 next();
             }, 100);
@@ -60,42 +60,58 @@ describe('stop animation', function () {
         });
 
         it('should not run the callback if stopped', function (next) {
-            test.style.opacity = 0;
 
-            var wtf = false,
-                opacity = test.animate({ opacity: 1 },{
-                    duration: '5s',
-                    callback: function () {
-                        // it should throw error if it reaches here
-                        wtf = true;
-                    }
-                });
+            var el = document.createElement('div'),
+                wtf = false,
+                animation = null;
+
+            el.style.width = '100px';
+            el.style.height = '100px';
+            el.style.backgroundColor = '#bada55';
+
+            document.body.appendChild(el);
+
+            animation = moofx(el).animate({ 'margin-left': '400px' }, {
+                duration: '5s',
+                // it should throw error if it reaches here
+                callback: function () { wtf = true; }
+            });
+
+            console.log(moofx(el))
 
             setTimeout(function () {
-                opacity.stop();
+                moofx(el).stop();
                 expect(wtf).to.not.be.ok();
                 next();
-            }, 25);
+            }, 100);
 
         });
 
         it('should not run the callback if hard stopped', function (next) {
-            test.style.opacity = 0;
 
-            var wtf = false,
-                opacity = test.animate({ opacity: 1 }, {
-                    duration: '5s',
-                    callback: function () {
-                        // it should throw error if it reaches here
-                        wtf = true;
-                    }
-                });
+            var el = document.createElement('div'),
+                wtf = false,
+                animation = null;
+
+            el.style.width = '100px';
+            el.style.height = '100px';
+            el.style.backgroundColor = '#bada55';
+
+            document.body.appendChild(el);
+
+            animation = moofx(el).animate({ 'margin-left': '400px' }, {
+                duration: '5s',
+                // it should throw error if it reaches here
+                callback: function () { wtf = true; }
+            });
+
+            console.log(moofx(el))
 
             setTimeout(function () {
-                opacity.stop(true);
+                moofx(el).stop(true);
                 expect(wtf).to.not.be.ok();
                 next();
-            }, 25);
+            }, 100);
 
         });
 
