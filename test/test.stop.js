@@ -69,7 +69,7 @@ describe('stop animation', function () {
                 });
 
             setTimeout(function () {
-                test.stop();
+                animation.stop();
                 expect(wtf).to.not.be.ok();
                 next();
             }, 100);
@@ -86,7 +86,7 @@ describe('stop animation', function () {
                 });
 
             setTimeout(function () {
-                test.stop(true);
+                animation.stop(true);
                 expect(wtf).to.not.be.ok();
                 next();
             }, 100);
@@ -103,7 +103,7 @@ describe('stop animation', function () {
                 });
 
             setTimeout(function () {
-                test.stop(true);
+                animation.stop(true);
                 expect(wtf).to.not.be.ok();
 
                 test.animate({ 'margin-left': '400px' }, {
@@ -113,6 +113,42 @@ describe('stop animation', function () {
             }, 100);
 
         });
+
+        it('Node#stop should stop animation', function () {
+            var wtf = false,
+                animation = test.animate({ 'margin-left': '400px' }, {
+                    duration: '5s',
+                    // it should throw error if it reaches here
+                    callback: function () { wtf = true; }
+                });
+
+            setTimeout(function () {
+                test.stop(true);
+
+                expect(test.compute('margin-left')).to.be('400px');
+                expect(wtf).to.not.be.ok();
+
+                next();
+            }, 100);
+        })
+
+        it('Animation#stop should stop animation', function () {
+            var wtf = false,
+                animation = test.animate({ 'margin-left': '400px' }, {
+                    duration: '5s',
+                    // it should throw error if it reaches here
+                    callback: function () { wtf = true; }
+                });
+
+            setTimeout(function () {
+                animation.stop(true);
+
+                expect(test.compute('margin-left')).to.be('400px');
+                expect(wtf).to.not.be.ok();
+
+                next();
+            }, 100);
+        })
 
     });
 
