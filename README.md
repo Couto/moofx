@@ -24,7 +24,7 @@ Every property in moofx can either be provided camelized (`backgroundColor`) or 
 Colors can be provided as rbg (`rgb(20,30,40)`), rbga (`rbga(20,30,40,0.5)`), hsl (`hsl(20,30,40)`), hsla (`hsla(20,30,40,0.5)`) hex (`#fa0`, `#ffaa00`), or hexa (`#ffaa00ff`, `#fa0f`).
 Lengths will always be retrieved in pixels, unless they have a value of `auto`, and you are able to animate *from to whatever length unit to whatever length unit*.
 
-moofx3 can animate and has full support for the following properties: `backgroundColor`, `color`, `backgroundSize`, `fontSize`, `height`, `width`, `marginTop`, `paddingTop`, `borderTopWidth`, `top`, `borderTopColor`, `borderTopStyle`, `marginRight`, `paddingRight`, `borderRightWidth`, `right`, `borderRightColor`, `borderRightStyle`, `marginBottom`, `paddingBottom`, `borderBottomWidth`, `bottom`, `borderBottomColor`, `borderBottomStyle`, `marginLeft`, `paddingLeft`, `borderLeftWidth`, `left`, `borderLeftColor`, `borderLeftStyle`, `borderTopLeftRadius`, `borderTopRightRadius`, `borderBottomRightRadius`, `borderBottomLeftRadius`, `zIndex`, `margin`, `padding`, `borderRadius`, `borderWidth`, `borderColor`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft`, `border`, `opacity`, `boxShadow`, `textShadow` and `transform`. Every other css property is handled automatically using getComputedStyle.
+moofx3 can animate and has full support for the following properties: `backgroundColor`, `color`, `backgroundSize`, `fontSize`, `height`, `width`, `marginTop`, `paddingTop`, `borderTopWidth`, `top`, `borderTopColor`, `borderTopStyle`, `marginRight`, `paddingRight`, `borderRightWidth`, `right`, `borderRightColor`, `borderRightStyle`, `marginBottom`, `paddingBottom`, `borderBottomWidth`, `bottom`, `borderBottomColor`, `borderBottomStyle`, `marginLeft`, `paddingLeft`, `borderLeftWidth`, `left`, `borderLeftColor`, `borderLeftStyle`, `borderTopLeftRadius`, `borderTopRightRadius`, `borderBottomRightRadius`, `borderBottomLeftRadius`, `zIndex`, `margin`, `padding`, `borderRadius`, `borderWidth`, `borderColor`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft`, `border`, `opacity`, `boxShadow`, `textShadow` and `transform`. Every other css property is handled automatically using `getComputedStyle`.
 
 ### moofx
 
@@ -65,6 +65,12 @@ moofx(nodes).animate({'background-color': '#ffa'}, {duration: "5s", equation: 'e
 }});
 ```
 
+The options object takes as keys:
+
+ - `callback`: a function to fire when the animation is done.
+ - `duration`: duration of the animation as a number or string, in either milliseconds (500 or "500ms") or in seconds ("500s").
+ - `equation`: a standards compliant css cubic bezier function. See [cubic-bezier](http://cubic-bezier.com/) and go crazy. Yes, this works even if the browser does not support css animations. You're welcome.
+
 ### moofx::style
 
 The `style` method accepts either an object made of styles or property and a value.
@@ -104,7 +110,7 @@ moofx.requestFrame(callback); //times
 
 ### moofx.color
 
-moofx also exports a simple any-to-rgb color converter, with a very basic, very straightforward usage:
+moofx also exports a simple any-to-rgb color converter:
 
 ```javascript
 moofx.color('#000'); //rgb(0, 0, 0)
@@ -115,13 +121,9 @@ moofx.color('hsl(0, 0, 0)'); //rgb(0, 0, 0)
 moofx.color('hsla(0, 0, 0, 0)'); //rgba(0, 0, 0, 0)
 ```
 
-## installation
-
-Include the pre-built moofx.js (or moofx-min.js) in the webpage of choice. Use it. Love it. Done.
-
 ## adapters
 
-moofx was built to be used in conjuction with your favorite javascript framework. Some basic examples:
+moofx can be used in conjuction with your favorite javascript framework. Some basic examples:
 
 MooTools integration:
 
@@ -140,22 +142,53 @@ jQuery.fn.animate = function(){
 	var moo = moofx(this.get());
 	moo.animate.apply(moo, arguments);
 	return this;
-});
+};
 ```
 
 Then just get busy with your dollars.
 
-## BIY (build-it-yourself)
+## include in a browser
 
-You can build moofx (+dependencies) from source with [wrapup](https://github.com/kamicane/wrapup)
+You can install moofx from npm:
 
 ```
-npm install wrapup -g
-mkdir webdev
-cd webdev
 npm install moofx
-wrup -r moofx moofx -o moofx.js
-wrup -r moofx moofx -o moofx-min.js -c
 ```
 
-Alternatively, you can use the `makejs` node executable in this repo (you still need wrapup installed).
+Then run the `distribute` executable, which will generate a moofx.js file in the root of the project.
+
+```
+./distribute
+```
+
+Alternatively, you can clone moofx from github, and run `npm install` afterwards
+
+```
+git clone https://github.com/kamicane/moofx.git
+cd moofx
+npm install
+./distribute
+```
+
+## in node.js
+
+Surprisingly, moofx can also be run in a node.js environment.
+Simply require it after `npm install`ing it:
+
+```javascript
+var moofx = require("moofx")
+```
+
+Instead of an html element, moofx in node takes a function as an argument. This function will fire for every step of the animation.
+Then you call `start(from, to)` and `stop()`
+
+```javascript
+var fx = moofx(function(now){
+    console.log(now)
+}, /* same options as moofx for browsers */{})/
+
+fx.start(0, 10)
+fx.stop()
+```
+
+Then get crazy and animate your command lines.

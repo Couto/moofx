@@ -1,7 +1,7 @@
 {
   "name": "moofx",
   "description": "A CSS3-enabled javascript animation library for node and the browser",
-  "version": "3.0.11",
+  "version": "3.0.14-dev",
   "license": "MIT (http://mootools.net/license.txt)",
   "main": "./lib/main.js",
   "keywords": [
@@ -22,19 +22,14 @@
   },
   "dependencies": {
     "cubic-bezier": "0.1.2",
-    "prime": "0.0.5-alpha",
-    "nodes": "0.0.6-alpha",
-    "wrapup": ">=0.9.10"
+    "prime": "0.0.6",
+    "elements": "0.0.9"
   },
   "sources": [
     "./moofx.js"
   ],
-  "scripts": {
-    "test": "clear && node makejs && phantomjs test/run-mocha.js test/index.html",
-    "start": "clear && ./makejs"
-  },
   "devDependencies": {
-    "cdir":"*"
+    "wrapup": "0.10"
   },
   "optionalDependencies": {},
   "engines": {
