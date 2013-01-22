@@ -25,7 +25,7 @@ var args = process.argv.slice(2)
 
 var wrupit = function(){
 
-    wrup.options({output: "./moofx.js", watch: args.indexOf("--watch") > -1, compress: true})
+    wrup.options({output: "./moofx.js", watch: args.indexOf("--watch") > -1, compress: args.indexOf("--uncompressed") === -1 })
 
     wrup.exclude("array.isArray", "array.every", "array.some", "array.filter",
                  "string.contains", "string.number", "string.escape", "string.decode",
